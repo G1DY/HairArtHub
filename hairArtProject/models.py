@@ -28,7 +28,7 @@ class Services(db.Model):
     def __repr__(self):
         return f"User('{self.service_id}', '{self.service_name}')"
 
-    class Appointments(db.Model):
+class Appointments(db.Model):
     '''Customer Appointments'''
     appointment_id = db.Column(db.Integer, primary_key=True)
     which_service = db.Column(db.Integer, db.ForeignKey('services.service_id'), unique=False, nullable=True)
@@ -38,7 +38,3 @@ class Services(db.Model):
 
     def __repr__(self):
         return f"Appointments('{self.which_customer}', '{self.which_service}')"
-
-
-
-
