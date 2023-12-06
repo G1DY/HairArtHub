@@ -15,7 +15,7 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        user = User.query.filter_by(email=email).first()
+        user = Customer.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
                 flash("Logged in Successfully", category="success")
@@ -44,7 +44,7 @@ def sign_up():
         password = request.form.get("password")
         _password = request.form.get("_password")
 
-        user = User.query.filter_by(email=email).first()
+        user = Customer.query.filter_by(email=email).first()
         if user:
             flash("User already exists", category="error")
         elif not email or len(email) < 5 or "@" not in email:
