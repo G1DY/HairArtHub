@@ -1,10 +1,31 @@
-# app/__init__.py
-
+#!/usr/bin/env python3
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from os import path
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Replace with your database URI
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+DB_NAME = "users.db"
 
-from app import routes  # Import routes after creating the Flask app instance
+
+def create_app():
+    app = Flask(__name__)
+    app.config["SECRET_KEY"] = "uniquepassword"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    db.init_app(app)
+
+    from .auth import auth
+
+    app.register_blueprint(auth, url_prefix="/")
+
+    from .models import Customer
+
+    with app.app_context():
+        db.create_all()
+
+    return app
+
+
+def create_database():
+    """creates database instances"""
+    if not path.exists("hairArtProject/" + DB_NAME):
+        db.create_all(app=app)
