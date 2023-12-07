@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from hairArtProject import create_app
 
-app = Flask(__name__)
+app = create_app()
 
 
 if __name__ == '__main__':
-    app.run(HOST='0.0.0.0', PORT='5000')
+    app.run(debug=True)
