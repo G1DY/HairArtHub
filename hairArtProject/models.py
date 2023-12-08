@@ -25,7 +25,7 @@ class Services(db.Model):
     price = db.Column(db.Float, unique=False, nullable=False)
 
     def __repr__(self):
-        return f"User('{self.service_id}', '{self.service_name}')"
+        return f"Services('{self.service_id}', '{self.service_name}')"
 
 
 class Appointments(db.Model):
@@ -40,4 +40,4 @@ class Appointments(db.Model):
     )
 
     def __repr__(self):
-        return f"User('{self.service_id}', '{self.service_name}')"
+        return f"Appointments('{self.appointment_id}', '{self.which_service}')"

@@ -21,7 +21,7 @@ def create_app():
     app.register_blueprint(services, url_prefix="/")
     app.register_blueprint(appointments, url_prefix="/")
 
-    from hairArtProject.models import Customer
+    from hairArtProject.models import Customer, Services, Appointments
 
     with app.app_context():
         db.create_all()

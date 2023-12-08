@@ -4,4 +4,4 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from hairArtProject.models import Services
 from flask import jsonify
 
-auth = Blueprint("services", __name__)
+services = Blueprint("services", __name__)

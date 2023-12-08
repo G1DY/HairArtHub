@@ -19,13 +19,13 @@ def login():
         user = Customer.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash("Logged in Successfully", category="success")
+                return jsonify({"message": "Logged in Successfully"})
                 login_user(user, remember=True)
             else:
-                flash("Incorrect Password, try again", category="error")
+                return jsonify({"message": "Incorrect Password, try again"})
         else:
-            flash("Email does not exist", category="error")
-    return render_template("login.html")
+            return jsonify({"message": "Email does not exist"})
+    return jsonify({"message": "Welcome to login page"})
 
 
 @auth.route("/logout", methods=["POST", "GET"], strict_slashes=False)
