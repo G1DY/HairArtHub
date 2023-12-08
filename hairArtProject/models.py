@@ -1,5 +1,5 @@
 from datetime import datetime
-from hairArtProject import db
+from . import db
 
 
 class Customer(db.Model):
@@ -15,7 +15,7 @@ class Customer(db.Model):
         return f"User('{self.name}', '{self.email}')"
 
 
-class Sevices(db.Model):
+class Services(db.Model):
     """the services available"""
 
     service_id = db.Column(db.Integer, primary_key=True)

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """authetication module"""
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from .models import Customer
+from hairArtProject.models import Customer
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, login_user, logout_user, current_user
+from flask import jsonify
 
 auth = Blueprint("auth", __name__)
 
@@ -46,15 +47,15 @@ def sign_up():
 
         user = Customer.query.filter_by(email=email).first()
         if user:
-            flash("User already exists", category="error")
+            flash({"message": "User already exists"})
         elif not email or len(email) < 5 or "@" not in email:
-            flash("Email must have atleast 5 characters", category="error")
+            return jsonify({"message": "Email must have atleast 5 characters"})
         elif len(username) < 5 or not username:
-            flash("Username must have atleats 5 characters", category="error")
+            return jsonify({"message": "Username must have atleats 5 characters"})
         elif password != _password:
-            flash("Password do not match", category="error")
+            return jsonify({"message": "Password do not match"})
         elif len(password) < 7 or len(_password) < 7:
-            flash("Password too short", category="error")
+            return jsonify({"message": "Password too short"})
         else:
             new_user = User(
                 email=email,
@@ -64,7 +65,7 @@ def sign_up():
             db.session.add(new_user)
             db.session.commit()
             login_user(user, remember=True)
-            flash("Account created!", category="success")
-            return redirect(url_for("views.home"))
+            return jsonify({"message": "Account created!"})
+            # return redirect(url_for("views.home"))
 
-    return render_template("sign_up.html")
+    return jsonify({"message": "Welcome to home page"})

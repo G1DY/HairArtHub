@@ -13,11 +13,15 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     db.init_app(app)
 
-    from .auth import auth
+    from hairArtProject.views.auth import auth
+    from hairArtProject.views.services import services
+    from hairArtProject.views.appointments import appointments
 
     app.register_blueprint(auth, url_prefix="/")
+    app.register_blueprint(services, url_prefix="/")
+    app.register_blueprint(appointments, url_prefix="/")
 
-    from .models import Customer
+    from hairArtProject.models import Customer
 
     with app.app_context():
         db.create_all()
