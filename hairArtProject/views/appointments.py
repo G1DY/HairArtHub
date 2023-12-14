@@ -12,7 +12,7 @@ def booking():
         service = request.form['service']
         selected_time = request.form['selected_time']
         username = session['name']
-        found_user = Customer.query.filter_by(name=name).first()
+        found_user = Customer.query.filter_by(name=username).first()
         customer_id = found_user.customer_id
         found_services = Services.query.filter_by(service_name=service).first()
         price = found_services.price
