@@ -5,3 +5,5 @@ from hairArtProject.models import Services
 from flask import jsonify
 
 services = Blueprint("services", __name__)
+
+

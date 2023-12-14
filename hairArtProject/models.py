@@ -22,6 +22,7 @@ class Services(db.Model):
     service_name = db.Column(db.String(20), unique=True, nullable=False)
     description = db.Column(db.String, unique=True, nullable=True)
     duration = db.Column(db.DateTime, unique=False, nullable=False)
+    booked_time = db.Column(db.DateTime, nullable=False, unique=True)
     price = db.Column(db.Float, unique=False, nullable=False)
 
     def __repr__(self):
