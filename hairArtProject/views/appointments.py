@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import Blueprint, render_template, request, redirect, url_for, flash, request
+from flask import Blueprint, render_template, request, redirect, url_for, flash, request, session
 from hairArtProject.models import Appointments
 from flask import jsonify
 from hairArtProject.models import Customer, Services, Appointments
+
 
 appointments = Blueprint("appointments", __name__)
 
@@ -28,7 +29,7 @@ def booking():
             flash('Time slot not available. Please choose another time.', 'danger')
             return redirect(url_for('appointments'))
     else:
-        return render_template(url_for('booking.html'))
+        return render_template('booking.html')
 
         
 
