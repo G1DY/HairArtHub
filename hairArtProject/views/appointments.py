@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from hairArtProject.models import Appointments
 from flask import jsonify
 from hairArtProject.models import Customer, Services, Appointments
+from . import db
 
 
 appointments = Blueprint("appointments", __name__)
