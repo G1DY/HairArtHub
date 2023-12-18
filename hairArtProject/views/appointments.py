@@ -32,5 +32,12 @@ def booking():
     else:
         return render_template('booking.html')
 
+@appointments.route('/payments', methods= ['POST', 'GET'])
+def payments():
+    if request.methods == 'POST':
+        pass
+    else:
+        return render_template('payments.html')
+
         
 
