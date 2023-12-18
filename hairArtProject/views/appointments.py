@@ -20,7 +20,7 @@ def booking():
         found_services = Services.query.filter_by(service_name=service).first()
         price = found_services.price
 
-        if not Appointments.query.filter_by(booked_time=selected_time, which_service=service).first():
+        if not Appointments.query.filter_by(appointment_timee=selected_time, which_service=service).first():
             new_booking = Appointments(which_service=service, which_customer=customer_id, appointment_time=selected_time)
             db.session.add(new_booking)
             db.session.commit()
