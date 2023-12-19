@@ -1,0 +1,40 @@
+
+
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff; 
+  }
+  
+  .heading {
+    grid-column: span 3;  
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .section {
+    background-color: #f5deb3; 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .section-heading {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .list li {
+    color: #800020; 
+    margin-bottom: 8px;
+  }
+  

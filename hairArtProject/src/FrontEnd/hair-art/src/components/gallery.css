@@ -1,0 +1,25 @@
+.gallery-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  
+  .gallery-item {
+    width: 22%;
+    margin: 1%; 
+    text-align: center;
+  }
+  
+  .gallery-item img {
+    width: 100%;
+    max-width: 100%; 
+    border-radius: 8px;
+  }
+  
+  .gallery-item p {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
