@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import Blueprint, render_template, request, redirect, url_for, flash, request, session
-from hairArtProject.models import Appointments
-from flask import jsonify
-from hairArtProject.models import Customer, Services, Appointments
-from . import db
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, session, url_for)
+
+from hairArtProject.models import Appointments, Customer, Services
+
+# from . import db
 
 
 appointments = Blueprint("appointments", __name__)

@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, url_for)
+
 from hairArtProject.models import Services
-from flask import jsonify
-from appointments import booking
+
+# from appointments import booking
 
 services = Blueprint("services", __name__)
 
 @services.route('/services', methods= ['POST', 'GET'])
-def services(service):
+def services_route(service):
     if request.method == 'POST':
         return redirect(url_for('booking', service=service))
     else:
