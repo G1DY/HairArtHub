@@ -1,12 +1,14 @@
 from datetime import datetime
+
 from . import db
 
 
 class Customer(db.Model):
     """The customer table"""
+    __tablename__ = 'customers'
 
     customer_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(60), unique=True, nullable=False)
     phone = db.Column(db.Integer, unique=True, nullable=False)
     gender = db.Column(db.CHAR)
