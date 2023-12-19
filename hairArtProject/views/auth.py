@@ -13,8 +13,8 @@ auth = Blueprint("auth", __name__)
 def login():
     """takes user name and password"""
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
+        email = request.json.get("email")
+        password = request.json.get("password")
 
         user = Customer.query.filter_by(email=email).first()
         if user:
