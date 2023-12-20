@@ -3,10 +3,11 @@
 from flask import (Blueprint, flash, jsonify, redirect, render_template,
                    request, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from hairArtProject import DB_NAME
-from hairArtProject.models import Customer
+from hairArtProject import DB_NAME, db
+from hairArtProject.models import Customer, User
 
 auth = Blueprint("auth", __name__)
 
@@ -18,7 +19,7 @@ def login():
         email = request.json.get("email")
         password = request.json.get("password")
 
-        user = Customer.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
                 login_user(user, remember=True)
@@ -41,34 +42,41 @@ def logout():
 
 @auth.route("/sign-up", methods=["POST", "GET"], strict_slashes=False)
 def sign_up():
-    """collects user information"""
+    """Collects user information"""
     if request.method == "POST":
         email = request.json.get("email")
         username = request.json.get("username") or ""
         password = request.json.get("password")
         _password = request.json.get("_password")
 
-        user = Customer.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
         if user:
-            flash({"message": "User already exists"})
-        elif not email or len(email) < 5:
-            return jsonify({"message": "Email must have atleast 5 characters"})
-        elif len(username) < 5 or not username:
-            return jsonify({"message": "Username must have atleats 5 characters"})
-        elif password != _password:
-            return jsonify({"message": "Password do not match"})
-        elif len(password) < 7 or len(_password) < 7:
-            return jsonify({"message": "Password too short"})
-        else:
-            new_user = Customer(
-                email=email,
-                username=username,
-                password=generate_password_hash(password, method="pbkdf2:sha256"),
-            )
-            DB_NAME.session.add(new_user)
-            DB_NAME.session.commit()
-            login_user(new_user, remember=True)
-            return jsonify({"message": "Account created!"})
-            # return redirect(url_for("views.home"))
+            return jsonify({"error": "Email is already in use"}), 400
 
-    return jsonify({"message": "Welcome to home page"})
+        if not email or len(email) < 5:
+            return jsonify({"error": "Email must have at least 5 characters"}), 400
+
+        if len(username) < 5 or not username:
+            return jsonify({"error": "Username must have at least 5 characters"}), 400
+
+        if password != _password:
+            return jsonify({"error": "Passwords do not match"}), 400
+
+        if len(password) < 7 or len(_password) < 7:
+            return jsonify({"error": "Password is too short"}), 400
+
+        new_user = User(
+            email=email,
+            username=username,
+            password=generate_password_hash(password, method="pbkdf2:sha256"),
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user, remember=True)
+
+        # If using redirect instead of JSON response
+        # return redirect(url_for("views.home"))
+
+        return jsonify({"message": "Account created!"}), 200
+
+    return jsonify({"message": "Welcome to the home page"}), 200

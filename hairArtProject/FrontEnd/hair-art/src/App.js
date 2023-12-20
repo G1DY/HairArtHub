@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+import React from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import BookAppointment from "./components/bookAppointment";
+import Contact from "./components/contact";
+import Gallery from "./components/gallery";
+import Home from "./components/home";
+import Navbar from "./components/navbar";
+import Services from "./components/services";
+import Team from "./components/team";
 
-// import React from 'react';
-
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/navbar';
-import Home from './components/home';
-import Services from './components/services';
-import Team from './components/team';
-import Gallery from './components/gallery';
-import Contact from './components/contact';
-import BookAppointment from './components/bookAppointment';
-
-import './App.css';
+import "./App.css";
 
 const App = () => {
   return (

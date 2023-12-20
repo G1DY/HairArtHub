@@ -1,2 +1,6 @@
-flask
+Flask
+Flask-Login
+Flask-SQLAlchemy
+Flask-Migrate
 flask-cors
+flask-login
