@@ -40,7 +40,7 @@ def logout():
     return redirect(url_for("auth.login"))
 
 
-@auth.route("/sign-up", methods=["POST", "GET"], strict_slashes=False)
+@auth.route("/sign-up", methods=["POST", "GET", "DELETE"], strict_slashes=False)
 def sign_up():
     """Collects user information"""
     if request.method == "POST":
