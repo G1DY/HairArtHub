@@ -1,35 +1,33 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import (Blueprint, flash, jsonify, redirect, render_template,
-                   request, url_for)
+from flask import Blueprint, jsonify, redirect, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import check_password_hash, generate_password_hash
 
-from hairArtProject import DB_NAME, db
+from hairArtProject import db
 from hairArtProject.models import Customer, User
 
 auth = Blueprint("auth", __name__)
 
 
-@auth.route("/login", methods=["GET", "POST"], strict_slashes=False)
+@auth.route("/login", methods=["POST"], strict_slashes=False)
 def login():
-    """takes user name and password"""
+    """Takes email and password for user login"""
     if request.method == "POST":
         email = request.json.get("email")
         password = request.json.get("password")
 
+        # try: 
         user = User.query.filter_by(email=email).first()
-        if user:
-            if check_password_hash(user.password, password):
+        if user and user.check_password(password):
                 login_user(user, remember=True)
                 return jsonify({"message": "Logged in Successfully"}), 200
-                
-            else:
-                return jsonify({"message": "Incorrect Password, try again"})
         else:
-            return jsonify({"message": "Email does not exist"}), 201
-    return jsonify({"message": "Welcome to login page"})
+            return redirect(url_for('auth.sign_up'))
+        
+    # return redirect(url_for('auth.sign_up'))
+        # except Exception as e:
+        #     print(f"Error: {str(e)}")
+        #     return jsonify({"error": "Internal Server Error"}), 500
 
 
 @auth.route("/logout", methods=["POST", "GET"], strict_slashes=False)
@@ -40,7 +38,7 @@ def logout():
     return redirect(url_for("auth.login"))
 
 
-@auth.route("/sign-up", methods=["POST", "GET", "DELETE"], strict_slashes=False)
+@auth.route("/sign_up", methods=["POST", "GET", "DELETE"], strict_slashes=False)
 def sign_up():
     """Collects user information"""
     if request.method == "POST":
@@ -68,15 +66,12 @@ def sign_up():
         new_user = User(
             email=email,
             username=username,
-            password=generate_password_hash(password, method="pbkdf2:sha256"),
+            password=password,
         )
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user, remember=True)
 
-        # If using redirect instead of JSON response
-        # return redirect(url_for("views.home"))
-
         return jsonify({"message": "Account created!"}), 200
 
-    return jsonify({"message": "Welcome to the home page"}), 200
+    return jsonify({"message": "Please Create an Account"}), 200

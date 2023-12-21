@@ -4,3 +4,4 @@ Flask-SQLAlchemy
 Flask-Migrate
 flask-cors
 flask-login
+npm install axios

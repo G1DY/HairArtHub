@@ -16,7 +16,18 @@ class User(db.Model, UserMixin):
     def __init__(self, email, username, password):
         self.email = email
         self.username = username
-        self.password = generate_password_hash(password, method="pbkdf2:sha256")
+        self.set_password(password)  # Use the method to set the password
+
+    # @property
+    # def password(self):
+    #     return self.password
+
+    def set_password(self, plaintext_password):
+        self.password = generate_password_hash(plaintext_password, method="pbkdf2:sha256")
+
+    def check_password(self, plaintext_password):
+        print(check_password_hash(self.password, plaintext_password))
+        return check_password_hash(self.password, plaintext_password)
 
     def get_id(self):
         return str(self.user_id)
