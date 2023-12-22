@@ -74,7 +74,7 @@ class Appointments(db.Model):
     __tablename__ = 'appointments'
 
     appointment_id = db.Column(db.Integer, primary_key=True)
-    details = db.Column(db.String, unique=True, nullable=True)
+    details = db.Column(db.Integer, nullable=True)
     which_customer = db.Column(db.Integer, db.ForeignKey('customers.customer_id'), nullable=False)
     which_service = db.Column(db.Integer, db.ForeignKey('services.service_id'), nullable=False)
     appointment_time = db.Column(

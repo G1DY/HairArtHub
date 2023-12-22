@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import Blueprint, jsonify, redirect, request, url_for
-from flask_login import current_user, login_required, login_user, logout_user
+from flask import Blueprint, jsonify, redirect, request, session, url_for
+from flask_login import login_required, login_user, logout_user
 
 from hairArtProject import db
 from hairArtProject.models import Customer, User
@@ -13,11 +13,12 @@ auth = Blueprint("auth", __name__)
 def login():
     """Takes email and password for user login"""
     if request.method == "POST":
-        email = request.json.get("email")
+        username = request.json.get("username")
+        session['username'] = 'username'
         password = request.json.get("password")
 
         # try:
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username).first()
         if user:
             if user.check_password(password):
                 login_user(user, remember=True)
@@ -67,6 +68,11 @@ def sign_up():
             return jsonify({"error": "Password is too short"}), 400
 
         new_user = User(
+            email=email,
+            username=username,
+            password=password,
+        )
+        new = Customer(
             email=email,
             username=username,
             password=password,
