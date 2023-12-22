@@ -1,33 +1,44 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from "axios";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:5000/login',
-      data: {
-        username: 'Fred',
-        password: 'Flintstone',
-      },
-    });
-    // console.log('Login submitted:', { email, password });
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/login", {
+        email,
+        password,
+      });
+
+      setSuccessMessage(response.data.message);
+      setErrorMessage("");
+    } catch (error) {
+      setErrorMessage(error.response.data.error);
+      setSuccessMessage("");
+    }
+
+    setLoading(false);
   };
 
   return (
     <div>
       <h1>Login</h1>
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       <form onSubmit={handleLogin}>
         <label>
-          Email:
+          Username:
           <input
-            type='email'
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -37,17 +48,19 @@ const LoginPage = () => {
         <label>
           Password:
           <input
-            type='password'
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </label>
         <br />
-        <button type='submit'>Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
       <p>
-        Don't have an account? <Link to='/signup'>Sign up</Link>
+        Don't have an account? <Link to="/signup">Sign up</Link>
       </p>
     </div>
   );

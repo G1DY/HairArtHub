@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import LoginPage from './loginPage';
-import SignupPage from './signUp';
-import '../components/home.css';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../components/home.css";
+import LoginPage from "./loginPage";
+import SignupPage from "./signUp";
 
 const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -17,15 +17,15 @@ const Home = () => {
   };
 
   return (
-    <div className='home-container'>
-      <div className='home-background'></div>
-      <div className='home-content'>
+    <div className="home-container">
+      <div className="home-background"></div>
+      <div className="home-content">
         <h1>Welcome to Our Hair Salon</h1>
         <p>Experience the best in hair care and styling at our salon.</p>
         <p>Book an appointment with our talented team today!</p>
 
         {!showLogin ? (
-          <button className='login-button' onClick={handleLoginClick}>
+          <button className="login-button" onClick={handleLoginClick}>
             Login
           </button>
         ) : (
@@ -33,7 +33,7 @@ const Home = () => {
         )}
 
         {!showSignup ? (
-          <button className='signup-button' onClick={handleSignupClick}>
+          <button className="signup-button" onClick={handleSignupClick}>
             Sign Up
           </button>
         ) : (
@@ -41,7 +41,8 @@ const Home = () => {
         )}
 
         <p>
-          Don't have an account? <Link to="/signup">Sign up</Link>
+          Don't have an account?{" "}
+          <Link to="http://localhost:3000/signup">Sign up</Link>
         </p>
       </div>
     </div>

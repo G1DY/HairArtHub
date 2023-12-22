@@ -2,6 +2,7 @@
 from os import path
 
 from flask import Flask
+from flask_admin import Admin
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -11,13 +12,17 @@ DB_NAME = "users.db"
 migrate = Migrate()
 
 
-
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "uniquepassword"
+    app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     db.init_app(app)
     migrate.init_app(app, db)
+
+    admin = Admin(app, name='hairArtProject', template_mode='bootstrap3')
+
+    
 
 
     from hairArtProject.views.appointments import appointments
@@ -40,6 +45,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+    
 
     return app
 

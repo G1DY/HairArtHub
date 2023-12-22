@@ -1,44 +1,61 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import (Blueprint, flash, jsonify, redirect, render_template,
-                   request, session, url_for)
+from flask import Blueprint, jsonify, redirect, request, session
 
+from hairArtProject import db
 from hairArtProject.models import Appointments, Customer, Services
-
-# from . import db
-
 
 appointments = Blueprint("appointments", __name__)
 
-@appointments.route('/booking', methods=['POST', 'GET'])
-def booking():
+@appointments.route('/create_bookings', methods=['POST', 'GET'])
+def create_booking():
+    """books a service"""
     if request.method == 'POST':
-        service = request.form['service']
-        selected_time = request.form['selected_time']
-        username = session['name']
-        found_user = Customer.query.filter_by(name=username).first()
-        customer_id = found_user.customer_id
-        found_services = Services.query.filter_by(service_name=service).first()
-        price = found_services.price
+        """Check if 'name' key exists in the session"""
+        if 'name' in session:
+            username = session['name']
+            found_user = Customer.query.filter_by(name=username).first()
 
-        if not Appointments.query.filter_by(appointment_timee=selected_time, which_service=service).first():
-            new_booking = Appointments(which_service=service, which_customer=customer_id, appointment_time=selected_time)
-            db.session.add(new_booking)
-            db.session.commit()
-            flash('Booking successful!', 'success')
-            return redirect(url_for('payments'))
+            """Check if the user exists"""
+            if found_user:
+                customer_id = found_user.customer_id
+                service = request.json['service']
+                selected_time = request.json['selected_time']
+
+                found_services = Services.query.filter_by(service_name=service).first()
+                price = found_services.price
+
+                """Check if the selected time for the service is available"""
+                if not Appointments.query.filter_by(appointment_time=selected_time, which_service=service).first():
+                    new_booking = Appointments(which_service=service, which_customer=customer_id, appointment_time=selected_time)
+                    db.session.add(new_booking)
+                    db.session.commit()
+                    return jsonify({"message": "Booking successful!"}), 200
+                else:
+                    return jsonify({"message": "Time slot not available, choose another time."}), 403
+            else:
+                return jsonify({"message": "User not found."}), 404
         else:
-            flash('Time slot not available. Please choose another time.', 'danger')
-            return redirect(url_for('appointments'))
-    else:
-        return render_template('booking.html')
+            return jsonify({"message": "User not authenticated."}), 401
+
+@appointments.route('/view_bookings', methods=['POST', 'GET'])
+def view_bookings():
+
+    return jsonify({})
+
+
+@appointments.route('/update_bookings', methods=['POST', 'GET'])
+def update_booking():
+
+    return jsonify({})
+
 
 @appointments.route('/payments', methods= ['POST', 'GET'])
 def payments():
     if request.methods == 'POST':
         pass
     else:
-        return render_template('payments.html')
+        return jsonify({})
 
         
 

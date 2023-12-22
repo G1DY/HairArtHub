@@ -16,15 +16,18 @@ def login():
         email = request.json.get("email")
         password = request.json.get("password")
 
-        # try: 
+        # try:
         user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
+        if user:
+            if user.check_password(password):
                 login_user(user, remember=True)
                 return jsonify({"message": "Logged in Successfully"}), 200
+            else:
+                return jsonify({"error": "Unauthorized Password, try again"}), 401
         else:
-            return redirect(url_for('auth.sign_up'))
+            return jsonify({"error": "Account Not Found, Please Sign Up"}), 404
         
-    # return redirect(url_for('auth.sign_up'))
+    return redirect(url_for('auth.sign_up'))
         # except Exception as e:
         #     print(f"Error: {str(e)}")
         #     return jsonify({"error": "Internal Server Error"}), 500
@@ -74,4 +77,4 @@ def sign_up():
 
         return jsonify({"message": "Account created!"}), 200
 
-    return jsonify({"message": "Please Create an Account"}), 200
+    return jsonify({"message": "Welcome to the home page"}), 200
