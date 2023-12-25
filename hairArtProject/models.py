@@ -1,7 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import Interval
 
 from . import db
 
@@ -60,7 +61,7 @@ class Services(db.Model):
     service_id = db.Column(db.Integer, primary_key=True)
     service_name = db.Column(db.String(20), unique=True, nullable=False)
     description = db.Column(db.String, unique=True, nullable=True)
-    duration = db.Column(db.DateTime, unique=False, nullable=False)
+    duration = db.Column(Interval, unique=False, nullable=False)
     price = db.Column(db.Float, unique=False, nullable=False)
 
     appointments = db.relationship('Appointments', backref='service', lazy=True)
@@ -83,3 +84,4 @@ class Appointments(db.Model):
 
     def __repr__(self):
         return f"Appointments('{self.appointment_id}', '{self.which_service}', '{self.appointment_time}')"
+    

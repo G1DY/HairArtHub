@@ -2,8 +2,8 @@
 """authetication module"""
 from flask import Blueprint, jsonify, redirect, request, session
 
-from hairArtProject import db
-from hairArtProject.models import Appointments, Customer, Services, User
+from .. import db
+from ..models import Appointments, Customer, Services, User
 
 appointments = Blueprint("appointments", __name__)
 

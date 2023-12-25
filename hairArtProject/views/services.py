@@ -3,7 +3,7 @@
 from flask import (Blueprint, flash, jsonify, redirect, render_template,
                    request, url_for)
 
-from hairArtProject.models import Services
+from ..models import Services
 
 # from appointments import booking
 

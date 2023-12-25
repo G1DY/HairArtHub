@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 from hairArtProject import create_app
 
-# print(sys.path)
+print(sys.path)
 
 app = create_app()
 CORS(app)

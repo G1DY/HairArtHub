@@ -3,8 +3,8 @@
 from flask import Blueprint, jsonify, redirect, request, session, url_for
 from flask_login import login_required, login_user, logout_user
 
-from hairArtProject import db
-from hairArtProject.models import Customer, User
+from .. import db
+from ..models import Customer, User
 
 auth = Blueprint("auth", __name__)
 
