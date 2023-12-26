@@ -14,7 +14,7 @@ def login():
     """Takes email and password for user login"""
     if request.method == "POST":
         username = request.json.get("username")
-        session['username'] = 'username'
+        session['username'] = username
         password = request.json.get("password")
 
         # try:

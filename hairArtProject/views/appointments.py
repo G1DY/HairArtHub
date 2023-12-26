@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """authetication module"""
 from flask import Blueprint, jsonify, redirect, request, session
+from datetime import datetime
 
 from .. import db
 from ..models import Appointments, Customer, Services, User
@@ -18,15 +19,16 @@ def create_booking():
             """Check if the user exists"""
             if found_user:
                 user_id = found_user.user_id
-                service = request.json.post['service']
-                selected_time = request.json.post['selected_time']
+                service = request.json['service']
+                selected_time = request.json['selected_time']
+                appointment_time = datetime.strptime(selected_time, "%Y-%m-%d %H:%M:%S.%f")
 
                 found_services = Services.query.filter_by(service_name=service).first()
                 price = found_services.price
 
                 """Check if the selected time for the service is available"""
                 if not Appointments.query.filter_by(appointment_time=selected_time, which_service=service).first():
-                    new_booking = Appointments(which_service=service, which_customer=user_id, appointment_time=selected_time, price=price)
+                    new_booking = Appointments(which_service=service, which_customer=user_id, appointment_time=appointment_time, details=price)
                     db.session.add(new_booking)
                     db.session.commit()
                     return jsonify({"message": "Booking successful!"}), 200
@@ -115,7 +117,7 @@ def update_booking():
 
 @appointments.route('/payments', methods= ['POST', 'GET'])
 def payments():
-    if request.methods == 'POST':
+    if request.method == 'POST':
         pass
     else:
         return jsonify({})
