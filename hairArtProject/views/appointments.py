@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 """authetication module"""
-<<<<<<< HEAD
-from datetime import datetime
-=======
-from flask import Blueprint, jsonify, redirect, request, session
 from datetime import datetime, timedelta
->>>>>>> 3f8783b8163e04a68ec41a3a33c7a8d81692f908
 
 from flask import Blueprint, jsonify, redirect, request, session
 
@@ -30,18 +25,11 @@ def create_booking():
                 appointment_time = datetime.strptime(selected_time, "%Y-%m-%d %H:%M:%S.%f")
 
                 found_services = Services.query.filter_by(service_name=service).first()
-<<<<<<< HEAD
-                if found_services:
-                    price = found_services.price
-                else:
-                    return jsonify({"message": "Service not found."}), 404
-=======
                 price = found_services.price
                 '''To fetch available appointment time:'''
-                service_duration = found_services.duration
-                new_duration = timedelta(seconds=service_duration.total_seconds())
-                available_time = appointment_time + new_duration
->>>>>>> 3f8783b8163e04a68ec41a3a33c7a8d81692f908
+                # service_duration = found_services.duration
+                # new_duration = timedelta(seconds=service_duration.total_seconds())
+                # available_time = appointment_time + new_duration
 
                 """Check if the selected time for the service is available"""
                 if not Appointments.query.filter_by(appointment_time=selected_time, which_service=service).first():
@@ -50,7 +38,7 @@ def create_booking():
                     db.session.commit()
                     return jsonify({"message": "Booking successful!"}), 200
                 else:
-                    response = jsonify({"message": f"Sorry. The time slot: {appointment_time} is not available. Kindly choose another time from {available_time}."})
+                    response = jsonify({"message": f"Sorry. The time slot: {appointment_time} is not available. Kindly choose another time from available_time."})
                     response.status_code = 403
                     return response
             else:
