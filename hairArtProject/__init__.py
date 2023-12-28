@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Interval
+
 #from hairArtProject.models import Appointments, Customer, Services, User
 #from hairArtProject.models import *
 db = SQLAlchemy()
@@ -45,18 +46,19 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
-    '''
-    with app.app_context():  
-        s1 = Services(service_name='Line Up Haircut', description=None, duration=timedelta(minutes=30), price=35.0)
-        s2 = Services(service_name='Waves + Low Fade', description=None, duration=timedelta(minutes=30), price=35.0)
-        s3 = Services(service_name='Twisted Curls With Blow Out Fade', description=None, duration=timedelta(minutes=30), price=35.0)
-        s4 = Services(service_name='Frohawk', description=None, duration=timedelta(minutes=30), price=35.0)
-        s5 = Services(service_name='Faux Hawk With blonde Sponge Twists', description=None, duration=timedelta(minutes=30), price=35.0)
-        s6 = Services(service_name='Goddess Braids', description=None, duration=timedelta(minutes=30), price=50.0)
-        s7 = Services(service_name='Knotless Braids', description=None, duration=timedelta(minutes=30), price=80.0)
-        s8 = Services(service_name='Box Braids', description=None, duration=timedelta(minutes=30), price=80.0)
-        s9 = Services(service_name='Full body massage', description=None, duration=timedelta(minutes=30), price=50.0)
-        s10 = Services(service_name='Full body wax', description=None, duration=timedelta(minutes=30), price=80.0)
+    
+    with app.app_context():
+        """
+        s1 = Services(service_name='Line Up Haircut', description=None, duration=30, price=35.0)
+        s2 = Services(service_name='Waves + Low Fade', description=None, duration=30, price=35.0)
+        s3 = Services(service_name='Twisted Curls With Blow Out Fade', description=None, duration=30, price=35.0)
+        s4 = Services(service_name='Frohawk', description=None, duration=30, price=35.0)
+        s5 = Services(service_name='Faux Hawk With blonde Sponge Twists', description=None, duration=30, price=35.0)
+        s6 = Services(service_name='Goddess Braids', description=None, duration=30, price=50.0)
+        s7 = Services(service_name='Knotless Braids', description=None, duration=30, price=80.0)
+        s8 = Services(service_name='Box Braids', description=None, duration=30, price=80.0)
+        s9 = Services(service_name='Full body massage', description=None, duration=30, price=50.0)
+        s10 = Services(service_name='Full body wax', description=None, duration=30, price=80.0)
 
         db.session.add(s1)
         db.session.add(s2)
@@ -68,10 +70,13 @@ def create_app():
         db.session.add(s8)
         db.session.add(s9)
         db.session.add(s10)
-
+        """
+        # Services.query.delete()
+        # Appointments.__table__.drop(db.engine)
         db.session.commit()
-'''
+
     return app
+    print(s1)
 
     
 

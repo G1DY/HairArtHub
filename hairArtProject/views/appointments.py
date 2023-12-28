@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """authetication module"""
-from flask import Blueprint, jsonify, redirect, request, session
 from datetime import datetime
+
+from flask import Blueprint, jsonify, redirect, request, session
 
 from .. import db
 from ..models import Appointments, Customer, Services, User
@@ -19,16 +20,19 @@ def create_booking():
             """Check if the user exists"""
             if found_user:
                 user_id = found_user.user_id
-                service = request.json['service']
-                selected_time = request.json['selected_time']
+                service = request.json.get('service')
+                selected_time = request.json.get('selected_time')
                 appointment_time = datetime.strptime(selected_time, "%Y-%m-%d %H:%M:%S.%f")
 
                 found_services = Services.query.filter_by(service_name=service).first()
-                price = found_services.price
+                if found_services:
+                    price = found_services.price
+                else:
+                    return jsonify({"message": "Service not found."}), 404
 
                 """Check if the selected time for the service is available"""
                 if not Appointments.query.filter_by(appointment_time=selected_time, which_service=service).first():
-                    new_booking = Appointments(which_service=service, which_customer=user_id, appointment_time=appointment_time, details=price)
+                    new_booking = Appointments(which_service=service, which_customer=user_id, appointment_time=appointment_time, price=price)
                     db.session.add(new_booking)
                     db.session.commit()
                     return jsonify({"message": "Booking successful!"}), 200
@@ -42,27 +46,33 @@ def create_booking():
 @appointments.route('/view_bookings', methods=['POST', 'GET'])
 def view_bookings():
     """View user's bookings"""
-    if 'name' in session:
-        username = session['username']
-        found_user = User.query.filter_by(username=username).first()
+    if request.method == 'POST':
+        if 'username' in session:
+            # Get the username from the request body
+            username = request.json.get('username')
 
-        if found_user:
-            user_id = found_user.user_id
-            user_bookings = Appointments.query.filter_by(which_customer=user_id).all()
+            if not username:
+                return jsonify({"message": "Username not provided in the request."}), 400
 
-            bookings_data = []
-            for booking in user_bookings:
-                booking_info = {
-                    'service': booking.service.service_name,
-                    'appointment_time': booking.appointment_time.strftime("%Y-%m-%d %H:%M:%S")
-                }
-                bookings_data.append(booking_info)
+            found_user = User.query.filter_by(username=username).first()
 
-            return jsonify({"bookings": bookings_data}), 200
+            if found_user:
+                user_id = found_user.user_id
+                user_bookings = Appointments.query.filter_by(which_customer=user_id).all()
+
+                bookings_data = []
+                for booking in user_bookings:
+                    booking_info = {
+                        'service': booking.which_service,
+                        'appointment_time': booking.appointment_time.strftime("%Y-%m-%d %H:%M:%S:%f")
+                    }
+                    bookings_data.append(booking_info)
+
+                return jsonify({"bookings": bookings_data}), 200
+            else:
+                return jsonify({"message": "User not found."}), 404
         else:
-            return jsonify({"message": "User not found."}), 404
-    else:
-        return jsonify({"message": "User not authenticated."}), 401
+            return jsonify({"message": "User not authenticated."}), 401
 
 @appointments.route('/update_bookings', methods=['POST', 'GET'])
 def update_booking():
@@ -77,12 +87,12 @@ def update_booking():
             return jsonify({"message": "User not found."}), 404
 
         user_id = user.user_id
-        booking_id = request.json.get('booking_id')
+        appointment_id = request.json.get('appointment_id')
 
-        if not booking_id:
-            return jsonify({"message": "Invalid request. 'booking_id' is required."}), 400
+        if not appointment_id:
+            return jsonify({"message": "Invalid request. 'appointment_id' is required."}), 400
 
-        booking = Appointments.query.filter_by(booking_id=booking_id, which_customer=user_id).first()
+        booking = Appointments.query.filter_by(appointment_id=appointment_id, which_customer=user_id).first()
 
         if not booking:
             return jsonify({"message": "Booking not found or doesn't belong to the user."}), 404

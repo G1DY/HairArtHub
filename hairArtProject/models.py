@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
 from flask_login import UserMixin
-from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import Interval
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from . import db
 
@@ -61,13 +61,13 @@ class Services(db.Model):
     service_id = db.Column(db.Integer, primary_key=True)
     service_name = db.Column(db.String(20), unique=True, nullable=False)
     description = db.Column(db.String, unique=True, nullable=True)
-    duration = db.Column(Interval, unique=False, nullable=False)
+    duration = db.Column(db.Integer, unique=False, nullable=False)
     price = db.Column(db.Float, unique=False, nullable=False)
 
     appointments = db.relationship('Appointments', backref='service', lazy=True)
 
     def __repr__(self):
-        return f"Services('{self.service_id}', '{self.service_name}')"
+        return f"Services('{self.service_id}', '{self.service_name}', '{self.price}')"
 
 
 class Appointments(db.Model):
@@ -75,7 +75,7 @@ class Appointments(db.Model):
     __tablename__ = 'appointments'
 
     appointment_id = db.Column(db.Integer, primary_key=True)
-    details = db.Column(db.Integer, nullable=True)
+    price = db.Column(db.Float, unique=False, nullable=False)
     which_customer = db.Column(db.Integer, db.ForeignKey('customers.customer_id'), nullable=False)
     which_service = db.Column(db.Integer, db.ForeignKey('services.service_id'), nullable=False)
     appointment_time = db.Column(
@@ -83,5 +83,5 @@ class Appointments(db.Model):
     )
 
     def __repr__(self):
-        return f"Appointments('{self.appointment_id}', '{self.which_service}', '{self.appointment_time}')"
+        return f"Appointments('{self.appointment_id}', '{self.which_service}', '{self.appointment_time}', '{self.price}')"
     
