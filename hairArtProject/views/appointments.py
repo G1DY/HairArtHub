@@ -27,9 +27,9 @@ def create_booking():
                 found_services = Services.query.filter_by(service_name=service).first()
                 price = found_services.price
                 '''To fetch available appointment time:'''
-                # service_duration = found_services.duration
-                # new_duration = timedelta(seconds=service_duration.total_seconds())
-                # available_time = appointment_time + new_duration
+                service_duration = found_services.duration
+                new_duration = timedelta(days=0, hours=0, minutes=service_duration, seconds=0)   
+                available_time = appointment_time + new_duration
 
                 """Check if the selected time for the service is available"""
                 if not Appointments.query.filter_by(appointment_time=selected_time, which_service=service).first():
@@ -38,7 +38,7 @@ def create_booking():
                     db.session.commit()
                     return jsonify({"message": "Booking successful!"}), 200
                 else:
-                    response = jsonify({"message": f"Sorry. The time slot: {appointment_time} is not available. Kindly choose another time from available_time."})
+                    response = jsonify({"message": f"Sorry. The time slot: {appointment_time} is not available. Kindly choose another time from {available_time}."})
                     response.status_code = 403
                     return response
             else:
@@ -102,6 +102,7 @@ def update_booking():
 
         service = request.json.get('service')
         selected_time = request.json.get('selected_time')
+        selected_time = datetime.strptime(selected_time, "%Y-%m-%d %H:%M:%S.%f")
 
         if not service or not selected_time:
             return jsonify({"message": "Invalid request. 'service' and 'selected_time' are required."}), 400
