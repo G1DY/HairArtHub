@@ -1,14 +1,31 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./bookAppointment.css";
 
 const BookAppointment = () => {
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
   const [service, setService] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [selected_time, setDateTime] = useState("");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    // Retrieve the token from storage when the component mounts
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  const saveTokenToStorage = (token) => {
+    // Save the token to storage
+    localStorage.setItem("token", token);
+  };
+
+  const removeTokenFromStorage = () => {
+    // Remove the token from storage
+    localStorage.removeItem("token");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +36,11 @@ const BookAppointment = () => {
         {
           service,
           selected_time,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the request headers
+          },
         }
       );
 
@@ -31,6 +53,11 @@ const BookAppointment = () => {
       setSuccessMessage(""); // Clear any previous success message
     }
     console.log("Form submitted:", { service, selected_time });
+  };
+  const handleLogout = () => {
+    // Clear the token from storage and state when logging out
+    removeTokenFromStorage();
+    setToken("");
   };
 
   return (
@@ -99,6 +126,11 @@ const BookAppointment = () => {
         <br />
         <button type="submit">Submit</button>
       </form>
+      {token ? (
+        <button onClick={handleLogout}>Logout</button>
+      ) : (
+        <p>You are not logged in.</p>
+      )}
     </div>
   );
 };
