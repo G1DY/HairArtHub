@@ -5,4 +5,5 @@ Flask-Migrate
 flask-cors
 flask-login
 flask-admin
+pyjwt==1.4.2
 # npm install axios

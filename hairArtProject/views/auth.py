@@ -21,8 +21,12 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user:
             if user.check_password(password):
-                login_user(user, remember=True)
-                return jsonify({"message": "Logged in Successfully"}), 200
+                token = user.encode_auth_token(user.user_id)
+                # print(token)
+                # import pdb; pdb.set_trace()
+                # login_user(user, remember=True)
+                return jsonify({"message": "Logged in Successfully",
+                                "token": token.decode()}), 200
             else:
                 return jsonify({"error": "Unauthorized Password, try again"}), 401
         else:

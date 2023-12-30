@@ -8,8 +8,9 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Interval
 
-#from hairArtProject.models import Appointments, Customer, Services, User
-#from hairArtProject.models import *
+# from hairArtProject.models import *
+# from hairArtProject.models import Appointments, Customer, Services, User
+
 db = SQLAlchemy()
 DB_NAME = "users.db"
 migrate = Migrate()
@@ -23,7 +24,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    admin = Admin(app, name='hairArtProject', template_mode='bootstrap3')
+    # admin = Admin(app, name='hairArtProject', template_mode='bootstrap3')
 
     from .views.appointments import appointments
     from .views.auth import auth
@@ -34,7 +35,9 @@ def create_app():
     app.register_blueprint(services, url_prefix="/")
     app.register_blueprint(appointments, url_prefix="/")
 
-    from .models import Appointments, Customer, Services, User, timedelta
+    from .models import User
+
+    #Appointment()
 
     with app.app_context():
         db.create_all()

@@ -2,23 +2,41 @@
 """authetication module"""
 from datetime import datetime, timedelta
 
-from flask import Blueprint, jsonify, redirect, request, session
+from flask import Blueprint, jsonify, request
+
+from hairArtProject.models import Appointments, Services, User
+from hairArtProject.views.auth import session
 
 from .. import db
-from ..models import Appointments, Customer, Services, User
 
 appointments = Blueprint("appointments", __name__)
 
 @appointments.route('/create_bookings', methods=['POST', 'GET'])
 def create_booking():
     """books a service"""
+    
     if request.method == 'POST':
         """Check if 'name' key exists in the session"""
-        if 'username' in session:
-            username = session['username']
-            found_user = User.query.filter_by(username=username).first()
-            """Check if the user exists"""
-            if found_user:
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            try:
+                auth_token = auth_header.split(" ")[1]
+            except IndexError:
+                responseObject = {
+                    'status': 'fail',
+                    'message': 'Bearer token malformed.'
+                }
+                return make_response(jsonify(responseObject)), 401
+        else:
+            auth_token = ''
+        if auth_token:
+            resp = User.decode_auth_token(auth_token)
+            if not isinstance(resp, str):
+                user_id = resp
+                # user = User.query.filter_by(id=resp).first()
+                found_user = User.query.filter_by(user_id=user_id).first()
+                """Check if the user exists"""
+            
                 user_id = found_user.user_id
                 service = request.json.get('service')
                 selected_time = request.json.get('selected_time')
@@ -26,7 +44,8 @@ def create_booking():
 
                 found_services = Services.query.filter_by(service_name=service).first()
                 price = found_services.price
-                '''To fetch available appointment time:'''
+
+                """To fetch available appointment time:"""
                 service_duration = found_services.duration
                 new_duration = timedelta(days=0, hours=0, minutes=service_duration, seconds=0)   
                 available_time = appointment_time + new_duration
@@ -44,7 +63,8 @@ def create_booking():
             else:
                 return jsonify({"message": "User not found."}), 404
         else:
-            return jsonify({"message": "User not authenticated."}), 401
+            print(session)
+            return jsonify({"message": "User not authenticated."}), 401       
 
 @appointments.route('/view_bookings', methods=['POST', 'GET'])
 def view_bookings():
@@ -75,6 +95,7 @@ def view_bookings():
             else:
                 return jsonify({"message": "User not found."}), 404
         else:
+            print(session)
             return jsonify({"message": "User not authenticated."}), 401
 
 @appointments.route('/update_bookings', methods=['POST', 'GET'])
