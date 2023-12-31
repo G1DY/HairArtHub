@@ -3,7 +3,9 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
 
+# from hairArtProject import CORS
 from hairArtProject.models import Appointments, Services, User
 from hairArtProject.views.auth import session
 
@@ -12,14 +14,16 @@ from .. import db
 appointments = Blueprint("appointments", __name__)
 
 @appointments.route('/create_bookings', methods=['POST', 'GET'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def create_booking():
     """books a service"""
-    
+
     if request.method == 'POST':
         """Check if 'name' key exists in the session"""
         auth_header = request.headers.get('Authorization')
         if auth_header:
             try:
+                import pdb; pdb.set_trace()
                 auth_token = auth_header.split(" ")[1]
             except IndexError:
                 responseObject = {
@@ -40,7 +44,7 @@ def create_booking():
                 user_id = found_user.user_id
                 service = request.json.get('service')
                 selected_time = request.json.get('selected_time')
-                appointment_time = datetime.strptime(selected_time, "%Y-%m-%d %H:%M:%S.%f")
+                appointment_time = datetime.strptime(selected_time, "%Y-%m-%dT%H:%M")
 
                 found_services = Services.query.filter_by(service_name=service).first()
                 price = found_services.price
@@ -64,7 +68,8 @@ def create_booking():
                 return jsonify({"message": "User not found."}), 404
         else:
             print(session)
-            return jsonify({"message": "User not authenticated."}), 401       
+            return jsonify({"message": "User not authenticated."}), 401
+    return 204
 
 @appointments.route('/view_bookings', methods=['POST', 'GET'])
 def view_bookings():

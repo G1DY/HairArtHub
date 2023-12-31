@@ -39,7 +39,7 @@ const BookAppointment = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDQwMTYxMDAsImlhdCI6MTcwNDAxNTUwMCwic3ViIjoyfQ.riqgxe9a6XZvWQaUWKFmsikC07WdZDSOtrKVdha4rro`, // Include the token in the request headers
           },
         }
       );
@@ -74,7 +74,7 @@ const BookAppointment = () => {
             required
           >
             <option value="">Choose a service</option>
-            <option value="Male Section">Line Up Haircut</option>
+            <option value="Line Up Haircut">Line Up Haircut</option>
             <option value="Male Section">Waves + Low Fade</option>
             <option value="Male Section">
               Twisted Curls With Blow Out Fade
