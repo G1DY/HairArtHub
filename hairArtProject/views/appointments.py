@@ -3,7 +3,9 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
 
+# from hairArtProject import CORS
 from hairArtProject.models import Appointments, Services, User
 from hairArtProject.views.auth import session
 
@@ -12,18 +14,20 @@ from .. import db
 appointments = Blueprint("appointments", __name__)
 
 @appointments.route('/create_bookings', methods=['POST', 'GET'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def create_booking():
     """books a service"""
-    
+
     if request.method == 'POST':
         """Check if 'name' key exists in the session"""
         auth_header = request.headers.get('Authorization')
         if auth_header:
             try:
+                # import pdb; pdb.set_trace()
                 auth_token = auth_header.split(" ")[1]
             except IndexError:
                 responseObject = {
-                    'status': 'fail',
+                    'sptatus': 'fail',
                     'message': 'Bearer token malformed.'
                 }
                 return make_response(jsonify(responseObject)), 401
@@ -40,7 +44,7 @@ def create_booking():
                 user_id = found_user.user_id
                 service = request.json.get('service')
                 selected_time = request.json.get('selected_time')
-                appointment_time = datetime.strptime(selected_time, "%Y-%m-%d %H:%M:%S.%f")
+                selected_time = datetime.strptime(selected_time, "%Y-%m-%dT%H:%M")
 
                 found_services = Services.query.filter_by(service_name=service).first()
                 price = found_services.price
@@ -48,23 +52,21 @@ def create_booking():
                 """To fetch available appointment time:"""
                 service_duration = found_services.duration
                 new_duration = timedelta(days=0, hours=0, minutes=service_duration, seconds=0)   
-                available_time = appointment_time + new_duration
+                available_time = selected_time + new_duration
 
                 """Check if the selected time for the service is available"""
                 if not Appointments.query.filter_by(appointment_time=selected_time, which_service=service).first():
-                    new_booking = Appointments(which_service=service, which_customer=user_id, appointment_time=appointment_time, price=price)
+                    new_booking = Appointments(which_service=service, which_customer=user_id, appointment_time=selected_time, price=price)
                     db.session.add(new_booking)
                     db.session.commit()
                     return jsonify({"message": "Booking successful!"}), 200
                 else:
-                    response = jsonify({"message": f"Sorry. The time slot: {appointment_time} is not available. Kindly choose another time from {available_time}."})
-                    response.status_code = 403
-                    return response
+                    return jsonify({"error": f"Sorry. The time slot: {selected_time} is not available. Kindly choose another time from {available_time}."}), 403
             else:
-                return jsonify({"message": "User not found."}), 404
+                return jsonify({"error": "Please log in first."}), 404
         else:
             print(session)
-            return jsonify({"message": "User not authenticated."}), 401       
+            return jsonify({"error": "User not authenticated."}), 401
 
 @appointments.route('/view_bookings', methods=['POST', 'GET'])
 def view_bookings():

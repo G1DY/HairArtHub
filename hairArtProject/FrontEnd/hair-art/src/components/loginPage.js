@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
@@ -8,6 +8,16 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    // Check if the token is present in local storage when the component mounts
+    const storedToken = localStorage.getItem("token");
+
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,6 +28,9 @@ const LoginPage = () => {
         username,
         password,
       });
+
+      localStorage.setItem("token", response.data.token);
+      setToken(response.data.token); // Optional: Set the token in the component state
 
       setSuccessMessage(response.data.message);
       setErrorMessage("");

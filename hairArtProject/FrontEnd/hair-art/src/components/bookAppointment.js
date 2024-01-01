@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./bookAppointment.css";
 
 const BookAppointment = () => {
@@ -9,23 +9,23 @@ const BookAppointment = () => {
   const [selected_time, setDateTime] = useState("");
   const [token, setToken] = useState("");
 
-  useEffect(() => {
-    // Retrieve the token from storage when the component mounts
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Retrieve the token from storage when the component mounts
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
   // const saveTokenToStorage = (token) => {
   //   // Save the token to storage
   //   localStorage.setItem("token", token);
   // };
 
-  const removeTokenFromStorage = () => {
-    // Remove the token from storage
-    localStorage.removeItem("token");
-  };
+  // const removeTokenFromStorage = () => {
+  //   // Remove the token from storage
+  //   localStorage.removeItem("token");
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,12 +39,13 @@ const BookAppointment = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDQxMTc4MTAsImlhdCI6MTcwNDExNjYxMCwic3ViIjoyfQ.DDuaYgSbFrKoHZAwn_knwy6MjC4juB4hz9opGwoF2vs`, // Include the token in the request headers
           },
         }
       );
 
       // If successful, update success message
+
       setSuccessMessage(response.data.message);
       setErrorMessage(""); // Clear any previous error message
     } catch (error) {
@@ -54,11 +55,11 @@ const BookAppointment = () => {
     }
     console.log("Form submitted:", { service, selected_time });
   };
-  const handleLogout = () => {
-    // Clear the token from storage and state when logging out
-    removeTokenFromStorage();
-    setToken("");
-  };
+  // const handleLogout = () => {
+  //   // Clear the token from storage and state when logging out
+  //   removeTokenFromStorage();
+  //   setToken("");
+  // };
 
   return (
     <div className="container">
@@ -74,16 +75,16 @@ const BookAppointment = () => {
             required
           >
             <option value="">Choose a service</option>
-            <option value="Male Section">Line Up Haircut</option>
-            <option value="Male Section">Waves + Low Fade</option>
-            <option value="Male Section">
+            <option value="Line Up Haircut">Line Up Haircut</option>
+            <option value="Female section">Waves + Low Fade</option>
+            <option value="Female section">
               Twisted Curls With Blow Out Fade
             </option>
-            <option value="Male Section">Frohawk</option>
-            <option value="Male Section">
+            <option value="Frohawk">Frohawk</option>
+            <option value="Female section">
               Faux Hawk With blonde Sponge Twists
             </option>
-            <option value="Male Section">Box Braids With Fade</option>
+            <option value="Female section">Box Braids With Fade</option>
             <option value="Male Section">Shaving</option>
             <option value="Male Section">Hair Dye</option>
             <option value="Male Section">Hair Tinting</option>
@@ -126,11 +127,11 @@ const BookAppointment = () => {
         <br />
         <button type="submit">Submit</button>
       </form>
-      {token ? (
+      {/* {token ? (
         <button onClick={handleLogout}>Logout</button>
       ) : (
         <p>You are not logged in.</p>
-      )}
+      )} */}
     </div>
   );
 };
