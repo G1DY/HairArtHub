@@ -8,6 +8,8 @@ import Home from "./components/home";
 import Navbar from "./components/navbar";
 import Services from "./components/services";
 import Team from "./components/team";
+import Registration from "./components/registration";
+
 
 import "./App.css";
 
@@ -23,6 +25,8 @@ const App = () => {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/bookAppointment" element={<BookAppointment />} />
+          <Route path="/registration" element={<Registration />} />
+
         </Routes>
       </div>
     </Router>

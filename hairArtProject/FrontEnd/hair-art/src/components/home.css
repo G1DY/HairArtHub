@@ -13,7 +13,7 @@
     background-image: url('../images/img3.jpg');
     background-size: cover; 
     background-position: center; 
-    filter: brightness(70%);
+    filter: brightness(90%);
   }
   
   
@@ -24,6 +24,10 @@
     transform: translate(-50%, -50%);
     text-align: center;
     color: #fff;
+  }
+
+  p, h1 {
+    color: white;
   }
 
   .login-button, signup-button {

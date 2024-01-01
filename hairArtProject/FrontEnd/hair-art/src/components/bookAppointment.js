@@ -17,10 +17,10 @@ const BookAppointment = () => {
     }
   }, []);
 
-  const saveTokenToStorage = (token) => {
-    // Save the token to storage
-    localStorage.setItem("token", token);
-  };
+  // const saveTokenToStorage = (token) => {
+  //   // Save the token to storage
+  //   localStorage.setItem("token", token);
+  // };
 
   const removeTokenFromStorage = () => {
     // Remove the token from storage

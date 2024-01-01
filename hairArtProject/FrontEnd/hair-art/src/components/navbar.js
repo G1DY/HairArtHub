@@ -19,6 +19,7 @@ const Navbar = () => {
         <Link to="/gallery">Gallery</Link>
         <Link to="/contact">Contact Us</Link>
         <Link to="/bookAppointment">Book an Appointment</Link>
+        <Link to="/registration">Registration</Link>
       </div>
     </nav>
   );
