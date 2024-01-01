@@ -7,7 +7,7 @@ const BookAppointment = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [selected_time, setDateTime] = useState("");
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   // useEffect(() => {
   //   // Retrieve the token from storage when the component mounts

@@ -8,14 +8,14 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   useEffect(() => {
     // Check if the token is present in local storage when the component mounts
     const storedToken = localStorage.getItem("token");
 
     if (storedToken) {
-      setToken(storedToken);
+      // setToken(storedToken);
     }
   }, []);
 
@@ -30,7 +30,7 @@ const LoginPage = () => {
       });
 
       localStorage.setItem("token", response.data.token);
-      setToken(response.data.token); // Optional: Set the token in the component state
+      // setToken(response.data.token); // Optional: Set the token in the component state
 
       setSuccessMessage(response.data.message);
       setErrorMessage("");
@@ -44,7 +44,6 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h1>Login</h1>
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       <form onSubmit={handleLogin}>

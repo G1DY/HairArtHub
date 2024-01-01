@@ -1,0 +1,45 @@
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .formContainer {
+    margin-top: 20px;
+  }
+  
+  .formTitle {
+    color: #555;
+  }
+  
+  .message {
+    margin-top: 20px;
+  }
+  
+  .toggleButton {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .logoutButton {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .link {
+    display: block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+  }
+  

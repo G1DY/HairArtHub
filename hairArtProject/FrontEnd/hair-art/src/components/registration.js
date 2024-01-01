@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LoginPage from './loginPage'; 
-import SignupPage from './Signup.js'; 
+import LoginPage from './loginPage';
+import SignupPage from './Signup.js';
+import './Registration.css'; 
+
 
 const Registration = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -11,36 +13,32 @@ const Registration = () => {
   };
 
   const handleLogout = () => {
-    // Simple logout logic: just switch to login mode
     setIsLoginMode(true);
     console.log('User logged out');
   };
 
   return (
-    <div>
-      <h1>Registration</h1>
-      <div>
-        <h2>{isLoginMode ? 'Login' : 'Signup'}</h2>
+    <div className="container">
+      <div className="formContainer">
+        <h2 className="formTitle">{isLoginMode ? 'Login' : 'Signup'}</h2>
         {isLoginMode ? <LoginPage /> : <SignupPage />}
       </div>
-      <p>
+      <p className="message">
         {isLoginMode
           ? "Don't have an account?"
           : 'Already have an account?'}{' '}
-        <button onClick={toggleMode}>
+        <button onClick={toggleMode} className="toggleButton">
           {isLoginMode ? 'Signup here' : 'Login here'}
         </button>
         {isLoginMode && (
-          <button onClick={handleLogout} style={{ marginLeft: '10px' }}>
+          <button onClick={handleLogout} className="logoutButton">
             Logout
           </button>
         )}
       </p>
-      <Link to="/">Back to Home</Link>
+      <Link to="/" className="link">Back to Home</Link>
     </div>
   );
 };
 
 export default Registration;
-
-   
