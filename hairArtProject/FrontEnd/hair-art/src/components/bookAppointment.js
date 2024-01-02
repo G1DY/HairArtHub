@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./bookAppointment.css";
 
 const BookAppointment = () => {
@@ -7,15 +7,15 @@ const BookAppointment = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [selected_time, setDateTime] = useState("");
-  // const [token, setToken] = useState("");
+  const [storedToken, setToken] = useState("");
 
-  // useEffect(() => {
-  //   // Retrieve the token from storage when the component mounts
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setToken(storedToken);
-  //   }
-  // }, []);
+  useEffect(() => {
+    // Retrieve the token from storage when the component mounts
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   // const saveTokenToStorage = (token) => {
   //   // Save the token to storage
@@ -39,7 +39,7 @@ const BookAppointment = () => {
         },
         {
           headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDQxMTc4MTAsImlhdCI6MTcwNDExNjYxMCwic3ViIjoyfQ.DDuaYgSbFrKoHZAwn_knwy6MjC4juB4hz9opGwoF2vs`, // Include the token in the request headers
+            Authorization: `Bearer ${storedToken}`, // Include the token in the request headers
           },
         }
       );
