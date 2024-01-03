@@ -45,7 +45,6 @@ class User(db.Model, UserMixin):
                 'iat': datetime.utcnow(),
                 'sub': user_id
             }
-
             return jwt.encode(
                 payload,
                 "gideon",
