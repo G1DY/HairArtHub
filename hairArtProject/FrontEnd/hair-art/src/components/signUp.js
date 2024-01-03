@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -34,7 +33,6 @@ const SignupPage = () => {
 
   return (
     <div>
-      <h1>Sign Up</h1>
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       <form onSubmit={handleSignup}>
@@ -80,9 +78,6 @@ const SignupPage = () => {
         <br />
         <button type="submit">Sign Up</button>
       </form>
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
     </div>
   );
 };
