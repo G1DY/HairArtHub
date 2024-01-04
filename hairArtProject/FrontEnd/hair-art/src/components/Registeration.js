@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./styles.css";
 import SignInForm from "./Signin";
-import SignUpForm from "./Signup";
+import SignUpForm from "./signUp";
 
 export default function App() {
-  const [type, setType] = useState("signIn");
+  const [type, setType] = useState("Signin");
   const handleOnClick = text => {
     if (text !== type) {
       setType(text);
@@ -29,7 +29,7 @@ export default function App() {
               <button
                 className="ghost"
                 id="signIn"
-                onClick={() => handleOnClick("signIn")}
+                onClick={() => handleOnClick("Signin")}
               >
                 Sign In
               </button>
