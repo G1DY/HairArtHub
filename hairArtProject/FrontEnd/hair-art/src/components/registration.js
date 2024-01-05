@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LoginPage from './loginPage';
-import SignupPage from './Signup.js';
+import SignupPage from './signUp.js';
 import './Registration.css'; 
 
 
